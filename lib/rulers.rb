@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require "rulers/version"
+require "rulers/array"
 
 module Rulers
   class Application
     def call(env)
+      `echo debug > debut.txt`;
       [
         200,
         { "Content-Type" => "text/html" },
