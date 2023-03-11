@@ -6,36 +6,32 @@ require "rulers/routing"
 
 module Rulers
   class Application
-    CONTENT_HEADER = { "Content-Type" => "text/html" }.freeze
+    STATUS_CODES = {
+      ok: 200,
+      not_found: 404,
+      internal_error: 500
+    }.freeze
 
     def call(env)
-      return not_found if env["PATH_INFO"] == "/favicon.ico"
+      return build_html_response(:not_found) if env["PATH_INFO"] == "/favicon.ico"
 
       begin
         klass, act = get_controller_and_action(env)
         controller = klass.new(env)
         text = controller.send(act)
-        [
-          200,
-          CONTENT_HEADER,
-          [text]
-        ]
+        build_html_response(:ok, text)
       rescue NameError
-        [
-          500,
-          CONTENT_HEADER,
-          ["Rescued a controller exception!"]
-        ]
+        build_html_response(:internal_error, "Controller error raised!")
       end
     end
 
     private
 
-    def not_found
+    def build_html_response(status_name, text_content = "")
       [
-        404,
-        CONTENT_HEADER,
-        []
+        STATUS_CODES.fetch(status_name),
+        { "Content-Type" => "text/html" },
+        [text_content]
       ]
     end
   end
