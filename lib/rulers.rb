@@ -8,6 +8,10 @@ require "rulers/dependencies"
 require "rulers/controller"
 
 module Rulers
+  def self.framework_root
+    __dir__
+  end
+
   class Application
     STATUS_CODES = {
       ok: 200,
