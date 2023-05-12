@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require "rulers/version"
 require "rulers/array"
+require "rulers/controller"
+require "rulers/dependencies"
+require "rulers/file_model"
 require "rulers/routing"
 require "rulers/util"
-require "rulers/dependencies"
-require "rulers/controller"
+require "rulers/version"
 
 module Rulers
   def self.framework_root
