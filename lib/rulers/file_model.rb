@@ -21,6 +21,10 @@ module Rulers
         @hash[name.to_s] = value
       end
 
+      def self.all
+        Dir["db/quotes/*.json"].map { FileModel.new _1 }
+      end
+
       def self.find(id)
         FileModel.new("db/quotes/#{id}.json")
       rescue Errno::ENOENT
