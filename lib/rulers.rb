@@ -23,13 +23,14 @@ module Rulers
     def call(env)
       return build_html_response(:not_found) if env["PATH_INFO"] == "/favicon.ico"
 
-      begin
-        klass, act = get_controller_and_action(env)
-        controller = klass.new(env)
-        text = controller.send(act)
+      klass, act = get_controller_and_action(env)
+      controller = klass.new(env)
+      text = controller.send(act)
+      res = controller.get_response
+      if res
+        [res.status, res.headers, [res.body].flatten]
+      else
         build_html_response(:ok, text)
-      rescue NameError
-        build_html_response(:internal_error, "Controller error raised!")
       end
     end
 
